@@ -11,21 +11,21 @@ import (
 	"testing"
 )
 
-//	TestLinkedList test cases
-func TestLinkedList(t *testing.T) {
+//	a few test cases
+var testScenarios = []struct {
+	scenario string
+	input    []string
+}{
+	{scenario: "Empty list", input: []string{}},
+	{scenario: "Single element list", input: []string{"hello"}},
+	{scenario: "Double elements list", input: []string{"hello", "world"}},
+	{scenario: "Multiple elements list", input: []string{"linked", "list", "data", "structure"}},
+}
 
-	t.Run(">>> Insert and iterate through linked list", func(t *testing.T) {
+//	TestGenericLinkedList test cases
+func test_genericLinkedList(t *testing.T, testCase string, newLinkedList func() GenericLinkedList) {
 
-		//	a few test cases
-		var testScenarios = []struct {
-			scenario string
-			input    []string
-		}{
-			{scenario: "Empty list", input: []string{}},
-			{scenario: "Single element list", input: []string{"hello"}},
-			{scenario: "Double elements list", input: []string{"hello", "world"}},
-			{scenario: "Multiple elements list", input: []string{"linked", "list", "data", "structure"}},
-		}
+	t.Run(">>> "+testCase, func(t *testing.T) {
 
 		for _, test := range testScenarios {
 
@@ -33,7 +33,7 @@ func TestLinkedList(t *testing.T) {
 
 			//	add the input to the linked list
 			want := ""
-			testLinkedList := NewLinkedList()
+			testLinkedList := newLinkedList()
 
 			for _, item := range test.input {
 				want += item + " "
@@ -59,4 +59,9 @@ func TestLinkedList(t *testing.T) {
 			}
 		}
 	})
+}
+
+//	TestLinkedList linked list test cases
+func TestLinkedList(t *testing.T) {
+	test_genericLinkedList(t, "Insert and iterate through linked list", NewLinkedList)
 }

@@ -6,15 +6,15 @@
 
 package main
 
-type linkedListElement struct {
-	value interface{}
-	next  *linkedListElement
-}
-
 type GenericLinkedList interface {
 	AddElement(value interface{})
 	First()
 	Next() interface{}
+}
+
+type linkedListElement struct {
+	value interface{}
+	next  *linkedListElement
 }
 
 type LinkedList struct {
@@ -23,7 +23,7 @@ type LinkedList struct {
 }
 
 //	NewLinkedList create a new linked list
-func NewLinkedList() *LinkedList {
+func NewLinkedList() GenericLinkedList {
 	return &LinkedList{
 		head:     nil,
 		iterator: nil,
