@@ -10,4 +10,4 @@ Implementations:
 1. [Linked Lists](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/linkedList)
 2. [Linked Lists as Array](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/linkedList)
 3. [Stacks](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/stack)
-4. Queues
+4. [Queues](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/queue)

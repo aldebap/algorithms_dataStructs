@@ -16,7 +16,7 @@ type StackAsArray struct {
 	element []interface{}
 }
 
-//	NewLinkedList create a new linked list
+//	NewStack create a new stack as array
 func NewStack() Stack {
 	return &StackAsArray{
 		element: make([]interface{}, 0),
