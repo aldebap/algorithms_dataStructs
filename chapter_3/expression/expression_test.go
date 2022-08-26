@@ -6,6 +6,12 @@
 
 package expression
 
+import (
+	"fmt"
+	"strings"
+	"testing"
+)
+
 //	Test_infix2postfix test cases for the conversion from infix -> postfix
 func Test_infix2postfix(t *testing.T) {
 
@@ -34,6 +40,7 @@ func Test_infix2postfix(t *testing.T) {
 			postfix, err := infix2postfix(test.input)
 			if err != nil {
 				t.Errorf("fail converting from infix -> postfix: %s", err)
+				continue
 			}
 			want := test.output
 
@@ -44,7 +51,7 @@ func Test_infix2postfix(t *testing.T) {
 				if item == nil {
 					break
 				}
-				got += item.(string) + " "
+				got = item.(string) + " " + got
 			}
 			got = strings.TrimRight(got, " ")
 			fmt.Printf("[debug] postfix result: %s\n", got)
