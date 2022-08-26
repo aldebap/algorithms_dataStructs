@@ -11,3 +11,6 @@ Implementations:
 2. [Linked Lists as Array](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/linkedList)
 3. [Stacks](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/stack)
 4. [Queues](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/queue)
+
+A simple mathematical [expressions parser](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_3/expression)
+was also implemented as a practical example of using stacks.

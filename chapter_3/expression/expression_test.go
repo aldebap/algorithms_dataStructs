@@ -27,7 +27,7 @@ func Test_infix2postfix(t *testing.T) {
 		{scenario: "division", input: "10 / 2", output: "10 2 /"},
 		{scenario: "one parenthesis", input: "( 4 + 6 ) / 2", output: "4 6 + 2 /"},
 		{scenario: "two parenthesis", input: "( 4 + ( 2 * 3 ) ) / 2", output: "4 2 3 * + 2 /"},
-		{scenario: "unbalanced parenthesis", input: "( 4 + 6 / 2", output: ""},
+		{scenario: "unbalanced parenthesis", input: "( 4 + 6 / 2", output: "expression with unbalanced parenthesis"},
 	}
 
 	t.Run(">>> test conversion from infix -> postfix", func(t *testing.T) {
@@ -39,7 +39,9 @@ func Test_infix2postfix(t *testing.T) {
 			//	execute conversion from infix -> postfix
 			postfix, err := infix2postfix(test.input)
 			if err != nil {
-				t.Errorf("fail converting from infix -> postfix: %s", err)
+				if err.Error() != test.output {
+					t.Errorf("unexpected error converting from infix -> postfix: %s", err)
+				}
 				continue
 			}
 			want := test.output

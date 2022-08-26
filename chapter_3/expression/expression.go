@@ -28,13 +28,13 @@ func Parse(expression string) (float64, error) {
 func infix2postfix(expression string) (stack.Stack, error) {
 	postfix := stack.New()
 	operand := ""
-	operator := ' '
+	operator := stack.New()
 	parenthesis := 0
 
 	for _, char := range expression {
 		switch char {
 		case '+', '-', '*', '/':
-			operator = char
+			operator.Push(string(char))
 
 		case '(':
 			parenthesis++
@@ -43,9 +43,8 @@ func infix2postfix(expression string) (stack.Stack, error) {
 			if parenthesis == 0 {
 				return nil, errors.New("expression with missing open parenthesis")
 			}
-			if operator != ' ' {
-				postfix.Push(string(operator))
-				operator = ' '
+			if !operator.IsEmpty() {
+				postfix.Push(operator.Pop())
 			}
 			parenthesis--
 
@@ -68,8 +67,8 @@ func infix2postfix(expression string) (stack.Stack, error) {
 	if len(operand) > 0 {
 		postfix.Push(operand)
 	}
-	if operator != ' ' {
-		postfix.Push(string(operator))
+	if !operator.IsEmpty() {
+		postfix.Push(operator.Pop())
 	}
 
 	return postfix, nil
