@@ -1,3 +1,3 @@
-module queue/main
+module queue/queue
 
 go 1.17

@@ -4,7 +4,7 @@
 //	Test cases for the Stack Data Structure
 ////////////////////////////////////////////////////////////////////////////////
 
-package main
+package stack
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func TestStackAsArray(t *testing.T) {
 
 			//	execute operations in the input
 			want := test.output
-			testStack := NewStack()
+			testStack := New()
 
 			for _, operation := range strings.Split(test.input, " ") {
 				if operation == "*" {

@@ -4,7 +4,7 @@
 //	Queue Data Structure
 ////////////////////////////////////////////////////////////////////////////////
 
-package main
+package queue
 
 type Queue interface {
 	Put(value interface{})
@@ -16,8 +16,8 @@ type QueueAsArray struct {
 	element []interface{}
 }
 
-//	NewQueue create a new queue as array
-func NewQueue() Queue {
+//	New create a new queue as array
+func New() Queue {
 	return &QueueAsArray{
 		element: make([]interface{}, 0),
 	}

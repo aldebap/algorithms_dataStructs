@@ -4,7 +4,7 @@
 //	Stack Data Structure
 ////////////////////////////////////////////////////////////////////////////////
 
-package main
+package stack
 
 type Stack interface {
 	Push(value interface{})
@@ -16,8 +16,8 @@ type StackAsArray struct {
 	element []interface{}
 }
 
-//	NewStack create a new stack as array
-func NewStack() Stack {
+//	New create a new stack as array
+func New() Stack {
 	return &StackAsArray{
 		element: make([]interface{}, 0),
 	}

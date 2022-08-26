@@ -4,7 +4,7 @@
 //	Test cases for the Queue Data Structure
 ////////////////////////////////////////////////////////////////////////////////
 
-package main
+package queue
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func TestStackAsArray(t *testing.T) {
 
 			//	execute operations in the input
 			want := test.output
-			testQueue := NewQueue()
+			testQueue := New()
 
 			for _, operation := range strings.Split(test.input, " ") {
 				if operation == "*" {
