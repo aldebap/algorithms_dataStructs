@@ -9,12 +9,14 @@ package expression
 import (
 	"errors"
 	"log"
+	"strconv"
 
+	"github.com/aldebap/algorithms_dataStructs/chapter_3/queue"
 	"github.com/aldebap/algorithms_dataStructs/chapter_3/stack"
 )
 
 //	Parse parses a simple expression using a stack
-func Parse(expression string) (float64, error) {
+func Parse(expression string) (int64, error) {
 
 	postfix, err := infix2postfix(expression)
 	if err != nil {
@@ -25,8 +27,8 @@ func Parse(expression string) (float64, error) {
 }
 
 //	infix2postfix read the infix expression and create a stack with the postfix version of it
-func infix2postfix(expression string) (stack.Stack, error) {
-	postfix := stack.New()
+func infix2postfix(expression string) (queue.Queue, error) {
+	postfix := queue.New()
 	operand := ""
 	operator := stack.New()
 	parenthesis := 0
@@ -44,7 +46,7 @@ func infix2postfix(expression string) (stack.Stack, error) {
 				return nil, errors.New("expression with missing open parenthesis")
 			}
 			if !operator.IsEmpty() {
-				postfix.Push(operator.Pop())
+				postfix.Put(operator.Pop())
 			}
 			parenthesis--
 
@@ -53,9 +55,12 @@ func infix2postfix(expression string) (stack.Stack, error) {
 
 		case ' ':
 			if len(operand) > 0 {
-				postfix.Push(operand)
+				postfix.Put(operand)
 				operand = ""
 			}
+
+		default:
+			return nil, errors.New("syntax error: invalid character in expression: " + string(char))
 		}
 	}
 	//	make sure the parenthesis are balanced till the end
@@ -65,16 +70,65 @@ func infix2postfix(expression string) (stack.Stack, error) {
 
 	//	make sure the last operand and operators are pushed to the stack
 	if len(operand) > 0 {
-		postfix.Push(operand)
+		postfix.Put(operand)
 	}
 	if !operator.IsEmpty() {
-		postfix.Push(operator.Pop())
+		postfix.Put(operator.Pop())
 	}
 
 	return postfix, nil
 }
 
 //	evaluatePolishReverse evaluate the Polish reverse expression (postfix) and return a numerical result
-func evaluatePolishReverse(expression stack.Stack) (float64, error) {
-	return 0, nil
+func evaluatePolishReverse(postfix queue.Queue) (int64, error) {
+
+	operand := stack.New()
+
+	for {
+		item := postfix.Get()
+		if item == nil {
+			break
+		}
+
+		//	attempt to convert the item to a int number
+		number, err := strconv.ParseInt(item.(string), 10, 64)
+		if err == nil {
+			operand.Push(number)
+			continue
+		}
+
+		//	must be an operation
+		var operand1 int64
+		var operand2 int64
+
+		if operand.IsEmpty() {
+			return 0, errors.New("operation + requires two operands")
+		}
+		operand2 = operand.Pop().(int64)
+
+		if operand.IsEmpty() {
+			return 0, errors.New("operation + requires two operands")
+		}
+		operand1 = operand.Pop().(int64)
+
+		switch item.(string) {
+		case "+":
+			operand.Push(operand1 + operand2)
+
+		case "-":
+			operand.Push(operand1 - operand2)
+
+		case "*":
+			operand.Push(operand1 * operand2)
+
+		case "/":
+			operand.Push(operand1 / operand2)
+		}
+	}
+
+	if operand.IsEmpty() {
+		return 0, nil
+	}
+
+	return operand.Pop().(int64), nil
 }
