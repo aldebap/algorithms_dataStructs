@@ -6,9 +6,16 @@
 
 package binaryTree
 
+import (
+	"github.com/aldebap/algorithms_dataStructs/chapter_3/stack"
+)
+
 type BinaryTree interface {
 	Add(value interface{})
 	Find(value interface{}) bool
+	PreorderTraversal() []interface{}
+	InorderTraversal() []interface{}
+	PostorderTraversal() []interface{}
 }
 
 type treeNode struct {
@@ -91,4 +98,37 @@ func (t *BinaryTreeRoot) Find(value interface{}) bool {
 			iterator = iterator.right
 		}
 	}
+}
+
+//	PreorderTraversal perform a preorder traversal of the tree and return the nodes in a slice
+func (t *BinaryTreeRoot) PreorderTraversal() []interface{} {
+	traversalResult := make([]interface{}, 0)
+	search := stack.New()
+
+	search.Push(t.root)
+	for {
+		if search.IsEmpty() {
+			break
+		}
+
+		node := search.Pop().(*treeNode)
+		if node != nil {
+			//	preorder means, visit the root, the the left subtree, and then the right subtree
+			traversalResult = append(traversalResult, node.value)
+			search.Push(node.right)
+			search.Push(node.left)
+		}
+	}
+
+	return traversalResult
+}
+
+//	InorderTraversal perform a inorder traversal of the tree and return the nodes in a slice
+func (t *BinaryTreeRoot) InorderTraversal() []interface{} {
+	return nil
+}
+
+//	PostorderTraversal perform a postorder traversal of the tree and return the nodes in a slice
+func (t *BinaryTreeRoot) PostorderTraversal() []interface{} {
+	return nil
 }
