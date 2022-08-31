@@ -7,15 +7,18 @@
 package binaryTree
 
 import (
+	"github.com/aldebap/algorithms_dataStructs/chapter_3/queue"
 	"github.com/aldebap/algorithms_dataStructs/chapter_3/stack"
 )
 
 type BinaryTree interface {
 	Add(value interface{})
 	Find(value interface{}) bool
+
 	PreorderTraversal() []interface{}
 	InorderTraversal() []interface{}
 	PostorderTraversal() []interface{}
+	LevelorderTraversal() []interface{}
 }
 
 type treeNode struct {
@@ -100,23 +103,51 @@ func (t *BinaryTreeRoot) Find(value interface{}) bool {
 	}
 }
 
+const (
+	visitNode         = 1
+	visitLeftSubtree  = 2
+	visitRightSubtree = 3
+)
+
+type traversalOperation struct {
+	node      *treeNode
+	operation uint8
+}
+
 //	PreorderTraversal perform a preorder traversal of the tree and return the nodes in a slice
 func (t *BinaryTreeRoot) PreorderTraversal() []interface{} {
 	traversalResult := make([]interface{}, 0)
 	search := stack.New()
 
-	search.Push(t.root)
+	//	preorder means, visit the root, then the left subtree, and then the right subtree
+	search.Push(&traversalOperation{node: t.root, operation: visitRightSubtree})
+	search.Push(&traversalOperation{node: t.root, operation: visitLeftSubtree})
+	search.Push(&traversalOperation{node: t.root, operation: visitNode})
+
 	for {
 		if search.IsEmpty() {
 			break
 		}
 
-		node := search.Pop().(*treeNode)
-		if node != nil {
-			//	preorder means, visit the root, the the left subtree, and then the right subtree
-			traversalResult = append(traversalResult, node.value)
-			search.Push(node.right)
-			search.Push(node.left)
+		traversalOp := search.Pop().(*traversalOperation)
+
+		switch traversalOp.operation {
+		case visitNode:
+			traversalResult = append(traversalResult, traversalOp.node.value)
+
+		case visitLeftSubtree:
+			if traversalOp.node.left != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitLeftSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitNode})
+			}
+
+		case visitRightSubtree:
+			if traversalOp.node.right != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitLeftSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitNode})
+			}
 		}
 	}
 
@@ -125,10 +156,122 @@ func (t *BinaryTreeRoot) PreorderTraversal() []interface{} {
 
 //	InorderTraversal perform a inorder traversal of the tree and return the nodes in a slice
 func (t *BinaryTreeRoot) InorderTraversal() []interface{} {
-	return nil
+	traversalResult := make([]interface{}, 0)
+	search := stack.New()
+
+	//	inorder means, visit the left subtree, then root, and then the right subtree
+	search.Push(&traversalOperation{node: t.root, operation: visitRightSubtree})
+	search.Push(&traversalOperation{node: t.root, operation: visitNode})
+	search.Push(&traversalOperation{node: t.root, operation: visitLeftSubtree})
+
+	for {
+		if search.IsEmpty() {
+			break
+		}
+
+		traversalOp := search.Pop().(*traversalOperation)
+
+		switch traversalOp.operation {
+		case visitNode:
+			traversalResult = append(traversalResult, traversalOp.node.value)
+
+		case visitLeftSubtree:
+			if traversalOp.node.left != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitNode})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitLeftSubtree})
+			}
+
+		case visitRightSubtree:
+			if traversalOp.node.right != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitNode})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitLeftSubtree})
+			}
+		}
+	}
+
+	return traversalResult
 }
 
 //	PostorderTraversal perform a postorder traversal of the tree and return the nodes in a slice
 func (t *BinaryTreeRoot) PostorderTraversal() []interface{} {
+	traversalResult := make([]interface{}, 0)
+	search := stack.New()
+
+	//	postorder means, visit the left subtree, then root, and then the right subtree
+	search.Push(&traversalOperation{node: t.root, operation: visitNode})
+	search.Push(&traversalOperation{node: t.root, operation: visitRightSubtree})
+	search.Push(&traversalOperation{node: t.root, operation: visitLeftSubtree})
+
+	for {
+		if search.IsEmpty() {
+			break
+		}
+
+		traversalOp := search.Pop().(*traversalOperation)
+
+		switch traversalOp.operation {
+		case visitNode:
+			traversalResult = append(traversalResult, traversalOp.node.value)
+
+		case visitLeftSubtree:
+			if traversalOp.node.left != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitNode})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.left, operation: visitLeftSubtree})
+			}
+
+		case visitRightSubtree:
+			if traversalOp.node.right != nil {
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitNode})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitRightSubtree})
+				search.Push(&traversalOperation{node: traversalOp.node.right, operation: visitLeftSubtree})
+			}
+		}
+	}
+
+	return traversalResult
+	return nil
+}
+
+//	LevelorderTraversal perform a level-order traversal of the tree and return the nodes in a slice
+func (t *BinaryTreeRoot) LevelorderTraversal() []interface{} {
+	traversalResult := make([]interface{}, 0)
+	search := queue.New()
+
+	//	level-order means, visit the nodes from top to bottom, and from left to right
+	search.Put(&traversalOperation{node: t.root, operation: visitNode})
+	search.Put(&traversalOperation{node: t.root, operation: visitLeftSubtree})
+	search.Put(&traversalOperation{node: t.root, operation: visitRightSubtree})
+
+	for {
+		if search.IsEmpty() {
+			break
+		}
+
+		traversalOp := search.Get().(*traversalOperation)
+
+		switch traversalOp.operation {
+		case visitNode:
+			traversalResult = append(traversalResult, traversalOp.node.value)
+
+		case visitLeftSubtree:
+			if traversalOp.node.left != nil {
+				search.Put(&traversalOperation{node: traversalOp.node.left, operation: visitNode})
+				search.Put(&traversalOperation{node: traversalOp.node.left, operation: visitLeftSubtree})
+				search.Put(&traversalOperation{node: traversalOp.node.left, operation: visitRightSubtree})
+			}
+
+		case visitRightSubtree:
+			if traversalOp.node.right != nil {
+				search.Put(&traversalOperation{node: traversalOp.node.right, operation: visitNode})
+				search.Put(&traversalOperation{node: traversalOp.node.right, operation: visitLeftSubtree})
+				search.Put(&traversalOperation{node: traversalOp.node.right, operation: visitRightSubtree})
+			}
+		}
+	}
+
+	return traversalResult
 	return nil
 }

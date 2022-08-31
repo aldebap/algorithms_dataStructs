@@ -111,7 +111,175 @@ func TestBinaryTreePreorderTraversal(t *testing.T) {
 
 			//	check the result
 			if want != got {
-				t.Errorf("failed traversing the binary tree: expected: %s result: %s", want, got)
+				t.Errorf("failed traversing the binary tree: expected: '%s' result: '%s'", want, got)
+			}
+		}
+	})
+}
+
+//	TestBinaryTreeInorderTraversal test cases
+func TestBinaryTreeInorderTraversal(t *testing.T) {
+
+	t.Run(">>> inorder traversal of binary trees", func(t *testing.T) {
+
+		//	a few test cases
+		var testScenarios = []struct {
+			scenario string
+			input    []string
+			traverse string
+		}{
+			{scenario: "Single element tree", input: []string{"once"}, traverse: "once"},
+			{scenario: "Double elements tree", input: []string{"once", "a"}, traverse: "a once"},
+			{scenario: "Multiple elements tree", input: []string{"once", "a", "tree", "has", "been", "constructed"}, traverse: "a been constructed has once tree"},
+		}
+
+		for _, test := range testScenarios {
+
+			fmt.Printf("scenario: %s\n", test.scenario)
+
+			//	add the input to the binary tree
+			want := test.traverse
+			testBinaryTree := New(func(firstValue, secondValue interface{}) int {
+				if firstValue.(string) < secondValue.(string) {
+					return -1
+				}
+				if firstValue.(string) > secondValue.(string) {
+					return 1
+				}
+
+				return 0
+			})
+
+			for _, item := range test.input {
+				testBinaryTree.Add(item)
+			}
+
+			//	perform a inorder traversal of the tree and concatenate the result
+			traversalResult := testBinaryTree.InorderTraversal()
+			got := ""
+
+			for _, value := range traversalResult {
+				if len(got) > 0 {
+					got += " "
+				}
+				got += value.(string)
+			}
+
+			//	check the result
+			if want != got {
+				t.Errorf("failed traversing the binary tree: expected: '%s' result: '%s'", want, got)
+			}
+		}
+	})
+}
+
+//	TestBinaryTreePostorderTraversal test cases
+func TestBinaryTreePostorderTraversal(t *testing.T) {
+
+	t.Run(">>> postorder traversal of binary trees", func(t *testing.T) {
+
+		//	a few test cases
+		var testScenarios = []struct {
+			scenario string
+			input    []string
+			traverse string
+		}{
+			{scenario: "Single element tree", input: []string{"once"}, traverse: "once"},
+			{scenario: "Double elements tree", input: []string{"once", "a"}, traverse: "a once"},
+			{scenario: "Multiple elements tree", input: []string{"once", "a", "tree", "has", "been", "constructed"}, traverse: "constructed been has a tree once"},
+		}
+
+		for _, test := range testScenarios {
+
+			fmt.Printf("scenario: %s\n", test.scenario)
+
+			//	add the input to the binary tree
+			want := test.traverse
+			testBinaryTree := New(func(firstValue, secondValue interface{}) int {
+				if firstValue.(string) < secondValue.(string) {
+					return -1
+				}
+				if firstValue.(string) > secondValue.(string) {
+					return 1
+				}
+
+				return 0
+			})
+
+			for _, item := range test.input {
+				testBinaryTree.Add(item)
+			}
+
+			//	perform a postorder traversal of the tree and concatenate the result
+			traversalResult := testBinaryTree.PostorderTraversal()
+			got := ""
+
+			for _, value := range traversalResult {
+				if len(got) > 0 {
+					got += " "
+				}
+				got += value.(string)
+			}
+
+			//	check the result
+			if want != got {
+				t.Errorf("failed traversing the binary tree: expected: '%s' result: '%s'", want, got)
+			}
+		}
+	})
+}
+
+//	TestBinaryTreeLevelorderTraversal test cases
+func TestBinaryTreeLevelorderTraversal(t *testing.T) {
+
+	t.Run(">>> level-order traversal of binary trees", func(t *testing.T) {
+
+		//	a few test cases
+		var testScenarios = []struct {
+			scenario string
+			input    []string
+			traverse string
+		}{
+			{scenario: "Single element tree", input: []string{"once"}, traverse: "once"},
+			{scenario: "Double elements tree", input: []string{"once", "a"}, traverse: "once a"},
+			{scenario: "Multiple elements tree", input: []string{"once", "a", "tree", "has", "been", "constructed"}, traverse: "once a tree has been constructed"},
+		}
+
+		for _, test := range testScenarios {
+
+			fmt.Printf("scenario: %s\n", test.scenario)
+
+			//	add the input to the binary tree
+			want := test.traverse
+			testBinaryTree := New(func(firstValue, secondValue interface{}) int {
+				if firstValue.(string) < secondValue.(string) {
+					return -1
+				}
+				if firstValue.(string) > secondValue.(string) {
+					return 1
+				}
+
+				return 0
+			})
+
+			for _, item := range test.input {
+				testBinaryTree.Add(item)
+			}
+
+			//	perform a level-order traversal of the tree and concatenate the result
+			traversalResult := testBinaryTree.LevelorderTraversal()
+			got := ""
+
+			for _, value := range traversalResult {
+				if len(got) > 0 {
+					got += " "
+				}
+				got += value.(string)
+			}
+
+			//	check the result
+			if want != got {
+				t.Errorf("failed traversing the binary tree: expected: '%s' result: '%s'", want, got)
 			}
 		}
 	})
