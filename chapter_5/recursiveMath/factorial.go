@@ -4,7 +4,7 @@
 //	Implementation of a recursive factorial function
 ////////////////////////////////////////////////////////////////////////////////
 
-package math
+package recursiveMath
 
 import "fmt"
 

@@ -4,7 +4,7 @@
 //	Test cases for the recursive Fibonacci function
 ////////////////////////////////////////////////////////////////////////////////
 
-package math
+package recursiveMath
 
 import (
 	"fmt"

@@ -4,7 +4,7 @@
 //	Implementation of a recursive Fibonacci function
 ////////////////////////////////////////////////////////////////////////////////
 
-package math
+package recursiveMath
 
 func Fibonacci(num uint8) uint64 {
 	if num == 0 {
