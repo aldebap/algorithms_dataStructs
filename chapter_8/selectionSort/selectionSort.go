@@ -16,7 +16,7 @@ func Sort(input []string) {
 			}
 		}
 
-		//	if an element smaller than i was found, swap them
+		//	if an element smaller than input[i] was found, swap them
 		if small != i {
 			aux := input[i]
 			input[i] = input[small]

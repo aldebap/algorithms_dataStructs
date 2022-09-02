@@ -38,3 +38,9 @@ Implementation:
 1. [Factorial & Fibonacci](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_5/recursiveMath)
 
 ## Chapter 8
+
+This chapter presents the simplest sorting algorithms.
+Implementation:
+
+1. [Selection Sort](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_8/selectionSort)
+2. [Insertion Sort](https://github.com/aldebap/algorithms_dataStructs/tree/main/chapter_8/insertionSort)
